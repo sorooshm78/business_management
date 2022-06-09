@@ -6,14 +6,13 @@ from business import models
 class RecordModelForm(forms.ModelForm):
     class Meta:
         model = models.Record
-        fields = '__all__'
+
+        exclude = [
+            'repository',
+            'category',
+        ]
+
         widgets = {
-            'repository': forms.TextInput(
-                attrs={
-                    'type': 'hidden',
-                    'class': 'form-control'
-                }
-            ),
             'title': forms.TextInput(
                 attrs={
                     'class': 'form-control'
@@ -26,13 +25,18 @@ class RecordModelForm(forms.ModelForm):
             ),
             'record_type': forms.Select(
                 attrs={
-                    'class': 'form-control'
-                }
+                    'class': 'form-control',
+                    'id': 'record_type',
+                    'onchange': 'fillCategory()',
+                },
+                choices=[]
             ),
-            'category': forms.Select(
+            'category_display': forms.Select(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'id': 'cat_dis',
                 }
+
             ),
             'price': forms.TextInput(
                 attrs={
@@ -51,5 +55,4 @@ class RecordModelForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-
         }

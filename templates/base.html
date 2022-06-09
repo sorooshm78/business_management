@@ -6,14 +6,17 @@
     <title>{% block title %}{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% block header_ref %}{% endblock %}
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <script src="{% static "jquery-3.6.0.min.js" %}"></script>
+    {% block header_ref %}{% endblock %}
 </head>
 
 
 <body>
 {% block content %}{% endblock %}
 </body>
+
+{% block footer_ref %}{% endblock %}
 
 </html>

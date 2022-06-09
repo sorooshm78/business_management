@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -10,14 +10,44 @@ from django.views.generic import ListView, CreateView
 from business import models, forms
 
 
+@login_required
+def get_category_list(request: HttpRequest):
+    record_type = request.GET.get('type')
+    repo_id = request.GET.get('repo_id')
+
+    categories = models.Category.objects.filter(repository_id=repo_id, record_type=record_type,
+                                                repository__user_id=request.user.id)
+
+    cat_list = []
+    for cat in categories:
+        cat_list.append((cat.name, cat.id))
+
+    return JsonResponse({
+        'list': cat_list
+    })
+
+
+@method_decorator(login_required, name='dispatch')
 class CreateRecordView(CreateView):
     form_class = forms.RecordModelForm
     template_name = 'business/add_record.html'
-    success_url = '/'
+
+    def get_success_url(self):
+        repo_id = str(self.kwargs.get('repo_id'))
+        return reverse('detail_repository', kwargs={'repo_id': repo_id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['repo_id'] = self.kwargs.get('repo_id')
+        return context
 
     def form_valid(self, form):
         repo_id = self.kwargs.get('repo_id')
+        category_id = form.instance.category_display
+
+        form.instance.category = models.Category.objects.get(id=category_id)
         form.instance.repository = models.Repository.objects.get(id=repo_id)
+
         return super().form_valid(form)
 
 
@@ -76,6 +106,14 @@ class RepositoryView(ListView):
 def del_repository(request: HttpRequest, repo_id):
     models.Repository.objects.filter(user_id=request.user.id, id=repo_id).delete()
     return redirect(reverse('list_repository'))
+
+
+@login_required
+def del_record(request: HttpRequest, record_id):
+    record = models.Record.objects.filter(id=record_id, repository__user_id=request.user.id).first()
+    repo_id = record.repository.id
+    record.delete()
+    return redirect(reverse('detail_repository', kwargs={'repo_id': repo_id}))
 
 
 @method_decorator(login_required, name='dispatch')

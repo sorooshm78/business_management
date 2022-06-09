@@ -54,6 +54,7 @@ PaymentType = [
 
 
 class Category(models.Model):
+    repository = models.ForeignKey(to=Repository, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     record_type = models.CharField(
         max_length=30,
@@ -76,7 +77,8 @@ class Record(models.Model):
         choices=RecordType,
     )
 
-    category = models.ForeignKey(to=Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(to=Category, on_delete=models.CASCADE, null=True, blank=True)
+    category_display = models.CharField(max_length=200)
     price = models.IntegerField()
     date = models.DateField()
     comment = models.TextField(null=True, blank=True)
