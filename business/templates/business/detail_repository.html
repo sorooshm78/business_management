@@ -1,49 +1,66 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    گزارش مخزن ...
+    مخزن {{ repo.name }}
 {% endblock %}
 
 {% block content %}
-    <div>
-        <p>نقدی </p>
-        <p>{{ repository.cash }}</p>
-        <p>کارت </p>
-        <p>{{ repository.cart }}</p>
-        <p>مجموع </p>
-        <p>{{ repository.get_total_money }}</p>
-    </div>
-    <div>
-        <table>
+
+
+    <div class="container bg-light">
+
+        <div class="card bg-primary text-center">
+            <div class="card-body">
+                <h4 class="card-title">{{ repo.name }}</h4>
+                <p class="card-text">موجودی نقد : {{ repo.cash }}</p>
+                <p class="card-text">موجودی کارت : {{ repo.cart }}</p>
+                <p class="card-text">جمع : {{ repo.get_total_value }}</p>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
             <tr>
-                <th>مخزن</th>
                 <th>عنوان</th>
                 <th>نوع تراکنش</th>
                 <th>نوع پرداخت</th>
                 <th>دسته بندی</th>
                 <th>قیمت</th>
                 <th>تاریخ</th>
-                <th></th>
+                <th>عملیات</th>
             </tr>
+            </thead>
+            <tbody>
 
             {% for record in records %}
                 <tr>
-                    <td>{{ record.repository }}</td>
                     <td>{{ record.title }}</td>
-                    <td>{{ record.get_payment_type_display }}</td>
                     <td>{{ record.get_record_type_display }}</td>
+                    <td>{{ record.get_payment_type_display }}</td>
                     <td>{{ record.category }}</td>
                     <td>{{ record.price }}</td>
                     <td>{{ record.date }}</td>
                     <td>
-                        <button>حذف</button>
-                        <button>ویرایش</button>
+                        <a class="btn btn-warning" href="">ویرایش</a>
+                        <a class="btn btn-danger" href="">حذف</a>
+                        <a class="btn btn-success" href="">جزیات</a>
                     </td>
                 </tr>
             {% endfor %}
 
+            <thead>
+            <tr>
+                <th>جمع</th>
+                <th>-</th>
+                <th>-</th>
+                <th>-</th>
+                <th> {{ sum_records }}</th>
+            </tr>
+            </thead>
 
+            </tbody>
         </table>
-    </div>
 
+
+        <a class="btn btn-warning btn-block" href="">افزودن رکورد</a>
+        <a class="btn btn-warning btn-block" href="">افزودن دسته بندی</a>
 {% endblock %}

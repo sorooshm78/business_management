@@ -16,6 +16,13 @@ class DetailRepositoryView(ListView):
     template_name = 'business/detail_repository.html'
     context_object_name = 'records'
 
+    @staticmethod
+    def get_sum_records(records):
+        sum_records_val = 0
+        for record in records:
+            sum_records_val += record.price
+        return sum_records_val
+
     def get_queryset(self):
         query = super().get_queryset()
 
@@ -27,11 +34,11 @@ class DetailRepositoryView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        # repository = models.Repository.objects.filter(
-        #     name='موتور',
-        # ).first()
-        #
-        # context['repository'] = repository
+
+        context['sum_records'] = DetailRepositoryView.get_sum_records(self.get_queryset())
+        context['repo'] = models.Repository.objects.filter(user_id=self.request.user.id,
+                                                           id=self.kwargs.get('repo_id')).first()
+
         return context
 
 
@@ -60,6 +67,7 @@ def del_repository(request: HttpRequest, repo_id):
     return redirect(reverse('list_repository'))
 
 
+@method_decorator(login_required, name='dispatch')
 class NewRepositoryView(View):
     def get(self, request: HttpRequest):
         return render(request, 'business/new_repository.html')
