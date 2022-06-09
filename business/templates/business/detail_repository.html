@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    گزارش مخزن ...
+{% endblock %}
+
+{% block content %}
+    <div>
+        <p>نقدی </p>
+        <p>{{ repository.cash }}</p>
+        <p>کارت </p>
+        <p>{{ repository.cart }}</p>
+        <p>مجموع </p>
+        <p>{{ repository.get_total_money }}</p>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th>مخزن</th>
+                <th>عنوان</th>
+                <th>نوع تراکنش</th>
+                <th>نوع پرداخت</th>
+                <th>دسته بندی</th>
+                <th>قیمت</th>
+                <th>تاریخ</th>
+                <th></th>
+            </tr>
+
+            {% for record in records %}
+                <tr>
+                    <td>{{ record.repository }}</td>
+                    <td>{{ record.title }}</td>
+                    <td>{{ record.get_payment_type_display }}</td>
+                    <td>{{ record.get_record_type_display }}</td>
+                    <td>{{ record.category }}</td>
+                    <td>{{ record.price }}</td>
+                    <td>{{ record.date }}</td>
+                    <td>
+                        <button>حذف</button>
+                        <button>ویرایش</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+        </table>
+    </div>
+
+{% endblock %}

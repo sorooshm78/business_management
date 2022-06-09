@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    مخزن ها
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container bg-light">
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>نام مخزن</th>
+                <th>موجودی نقد</th>
+                <th>موجودی کارت</th>
+                <th>عملیات</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for repository in repositories %}
+                <tr>
+                    <td>{{ repository.name }}</td>
+                    <td>{{ repository.cash }}</td>
+                    <td>{{ repository.cart }}</td>
+                    <td>
+                        <a class="btn btn-danger" href="{% url 'del_repository' repository.id %}">حذف</a>
+                        <a class="btn btn-success" href="{% url 'detail_repository' repository.id %}">جزیات</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            <thead>
+            <tr>
+                <th>جمع</th>
+                <th>{{ sum_cash }}</th>
+                <th>{{ sum_cart }}</th>
+            </tr>
+            </thead>
+
+            </tbody>
+        </table>
+
+
+        <a class="btn btn-warning btn-block" href="{% url 'new_repository' %}">افزودن مخزن</a>
+{% endblock %}
