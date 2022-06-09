@@ -40,9 +40,8 @@
                     <td>{{ record.price }}</td>
                     <td>{{ record.date }}</td>
                     <td>
-                        <a class="btn btn-warning" href="">ویرایش</a>
                         <a class="btn btn-danger" href="">حذف</a>
-                        <a class="btn btn-success" href="">جزیات</a>
+                        <a class="btn btn-success" href="">ویرایش</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -61,6 +60,6 @@
         </table>
 
 
-        <a class="btn btn-warning btn-block" href="">افزودن رکورد</a>
+        <a class="btn btn-warning btn-block" href="{% url 'add_record' repo.id %}">افزودن رکورد</a>
         <a class="btn btn-warning btn-block" href="">افزودن دسته بندی</a>
 {% endblock %}

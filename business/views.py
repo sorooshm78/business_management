@@ -4,10 +4,21 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 
 # Create your views here.
-from business import models
+from business import models, forms
+
+
+class CreateRecordView(CreateView):
+    form_class = forms.RecordModelForm
+    template_name = 'business/add_record.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        repo_id = self.kwargs.get('repo_id')
+        form.instance.repository = models.Repository.objects.get(id=repo_id)
+        return super().form_valid(form)
 
 
 @method_decorator(login_required, name='dispatch')

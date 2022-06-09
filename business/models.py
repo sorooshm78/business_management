@@ -65,7 +65,7 @@ class Category(models.Model):
 
 
 class Record(models.Model):
-    repository = models.ForeignKey(to=Repository, on_delete=models.CASCADE)
+    repository = models.ForeignKey(to=Repository, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
     payment_type = models.CharField(
         max_length=30,
