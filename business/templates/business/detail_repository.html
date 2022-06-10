@@ -41,20 +41,11 @@
                     <td>{{ record.date }}</td>
                     <td>
                         <a class="btn btn-danger" href="{% url 'del_record' record.id %}">حذف</a>
-                        <a class="btn btn-success" href="">ویرایش</a>
+                        <a class="btn btn-success" href="{% url 'update_record' record.id %}">ویرایش</a>
                     </td>
                 </tr>
             {% endfor %}
 
-            <thead>
-            <tr>
-                <th>جمع</th>
-                <th>-</th>
-                <th>-</th>
-                <th>-</th>
-                <th> {{ sum_records }}</th>
-            </tr>
-            </thead>
 
             </tbody>
         </table>

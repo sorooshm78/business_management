@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-
 # Create your models here.
 
 
@@ -10,6 +9,20 @@ class Repository(models.Model):
     name = models.CharField(max_length=200)
     cash = models.IntegerField(default=0)
     cart = models.IntegerField(default=0)
+
+    def add_price(self, payment_type, price):
+        if payment_type == 'cart':
+            self.cart += int(price)
+        elif payment_type == 'cash':
+            self.cash += int(price)
+        self.save()
+
+    def sub_price(self, payment_type, price):
+        if payment_type == 'cart':
+            self.cart -= int(price)
+        elif payment_type == 'cash':
+            self.cash -= int(price)
+        self.save()
 
     def get_total_value(self):
         return self.cart + self.cash

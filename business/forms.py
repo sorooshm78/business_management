@@ -29,7 +29,6 @@ class RecordModelForm(forms.ModelForm):
                     'id': 'record_type',
                     'onchange': 'fillCategory()',
                 },
-                choices=[]
             ),
             'category_display': forms.Select(
                 attrs={
@@ -48,6 +47,7 @@ class RecordModelForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'type': 'date',
+                    'id': 'date',
                 }
             ),
             'comment': forms.Textarea(
