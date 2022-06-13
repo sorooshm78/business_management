@@ -94,7 +94,7 @@ class Record(models.Model):
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, null=True, blank=True)
     category_display = models.CharField(max_length=200)
     price = models.IntegerField()
-    date = models.DateField()
+    date = models.CharField(max_length=40)
     comment = models.TextField(null=True, blank=True)
 
     def __str__(self):

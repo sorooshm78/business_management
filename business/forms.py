@@ -46,7 +46,7 @@ class RecordModelForm(forms.ModelForm):
             'date': forms.DateInput(
                 attrs={
                     'class': 'form-control',
-                    'type': 'date',
+                    'type': 'text',
                     'id': 'date',
                 }
             ),

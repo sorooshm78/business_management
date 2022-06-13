@@ -1,18 +1,22 @@
-{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}
-    ورود
-{% endblock %}
-
-
-{% block content %}
-    <div class="container bg-light">
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.as_p }}
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">ورود</button>
-        </form>
-    </div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ورود</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+</head>
+<body>
+<div class="container bg-light">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">ورود</button>
+    </form>
+</div>
+</body>
+</html>

@@ -7,6 +7,7 @@
 
 {% block header_ref %}
     <script src="{% static "custom.js" %}"></script>
+
     <script>
         $(document).ready(function () {
                 var record_type = $('#record_type').val();
@@ -35,13 +36,21 @@
                         }
                     );
                 })
-
-
+                $("#date").pDatepicker();
+                $('#date').persianDatepicker({
+                    observer: true,
+                    format: 'YYYY-MM-DD',
+                    altField: '.observer-example-alt',
+                    initialValueType: 'persian',
+                    calendar: {
+                        persian: {
+                            locale: 'en'
+                        }
+                    }
+                });
             }
         )
     </script>
-
-
 
 {% endblock %}
 

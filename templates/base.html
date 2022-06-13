@@ -8,14 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'jalali_date/css/persian-datepicker.min.css' %}">
     <script src="{% static "jquery-3.6.0.min.js" %}"></script>
+    <script src="{% static 'jalali_date/js/persian-date.min.js' %}"></script>
+    <script src="{% static 'jalali_date/js/persian-datepicker.min.js' %}"></script>
     {% block header_ref %}{% endblock %}
 </head>
 
 
 <body>
 <div class="container">
-    <a class="btn btn-danger btn-block" href="/user/login">خروج</a>
+    <a class="btn btn-danger btn-block" href="{% url 'logout' %}">خروج</a>
 </div>
 
 {% block content %}{% endblock %}

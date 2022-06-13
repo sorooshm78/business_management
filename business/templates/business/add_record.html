@@ -7,19 +7,38 @@
 
 {% block header_ref %}
     <script src="{% static "custom.js" %}"></script>
-    <script>
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        
-        today = yyyy + '-' + mm + '-' + dd;
 
+    <script type="text/javascript">
         $(document).ready(function () {
-                $('#date').attr('value', today);
-            }
-        );
+            $("#date").pDatepicker();
+            $('#date').persianDatepicker({
+                observer: true,
+                format: 'YYYY/MM/DD',
+                altField: '.observer-example-alt',
+                calendar: {
+                    persian: {
+                        locale: 'en'
+                    }
+                }
+            });
+        });
+
     </script>
+
+    {#    <script>#}
+    {#        var today = new Date();#}
+    {#        var dd = String(today.getDate()).padStart(2, '0');#}
+    {#        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!#}
+    {#        var yyyy = today.getFullYear();#}
+    {##}
+    {#        today = yyyy + '-' + mm + '-' + dd;#}
+    {##}
+    {#        $(document).ready(function () {#}
+    {#                $('#date').attr('value', today);#}
+    {#            }#}
+    {#        );#}
+    {#    </script>#}
+
 {% endblock %}
 
 {% block content %}
