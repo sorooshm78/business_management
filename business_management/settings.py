@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # my app
     'user',
     'business',
+    'category',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'business_management.urls'
+
+LOGIN_URL = 'user/login'
 
 TEMPLATES = [
     {

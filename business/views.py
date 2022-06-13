@@ -10,6 +10,7 @@ from django.views.generic import ListView, CreateView
 from business import models, forms
 
 
+@login_required
 def get_cat_dis_id(request: HttpRequest, record_id):
     record = models.Record.objects.filter(id=record_id).first()
     return JsonResponse({
