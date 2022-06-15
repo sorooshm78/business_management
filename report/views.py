@@ -98,6 +98,7 @@ def detail_reports_view(request: HttpRequest, repo_id):
         request,
         'report/detail_report.html', {
             'records': records,
+            'repo_id': repo_id,
         }
     )
 
