@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    گزارش
+{% endblock %}
+
+{% block content %}
+    <div class="container bg-light">
+        <p class="p-3 text-center">گزارشات</p>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>گزارش</th>
+                <th>تاریخ</th>
+                <th>دریافتی</th>
+                <th>مخارج</th>
+                <th>باقی مانده</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            <tr>
+                <td>روز</td>
+                <td> {{ today.date }}</td>
+                <td>{{ today.sum_input }}</td>
+                <td>{{ today.sum_output }}</td>
+                <td>{{ today.remaining }}</td>
+                <td><a class="btn btn-primary" href="{% url 'detail_report' repo_id %}?date=today">جزیات</a></td>
+            </tr>
+            <tr>
+                <td>ماه</td>
+                <td>{{ month.date }}</td>
+                <td>{{ month.sum_input }}</td>
+                <td>{{ month.sum_output }}</td>
+                <td>{{ month.remaining }}</td>
+                <td><a class="btn btn-primary" href="{% url 'detail_report' repo_id %}?date=month">جزیات</a></td>
+            </tr>
+            <tr>
+                <td>سال</td>
+                <td>{{ year.date }}</td>
+                <td>{{ year.sum_input }}</td>
+                <td>{{ year.sum_output }}</td>
+                <td>{{ year.remaining }}</td>
+                <td><a class="btn btn-primary" href="{% url 'detail_report' repo_id %}?date=year">جزیات</a></td>
+            </tr>
+
+
+            </tbody>
+        </table>
+{% endblock %}
