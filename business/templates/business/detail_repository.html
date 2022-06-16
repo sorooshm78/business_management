@@ -51,7 +51,9 @@
 
         <a class="btn btn-warning btn-block" href="{% url 'add_record' repo.id %}?type=input">افزودن دریافتی</a>
         <a class="btn btn-warning btn-block" href="{% url 'add_record' repo.id %}?type=output">افزودن برداشتی</a>
+        <hr>
         <a class="btn btn-warning btn-block" href="{% url 'list_categories' repo_id=repo.id %}">دسته بندی</a>
         <a class="btn btn-warning btn-block" href="{% url 'report' repo_id=repo.id %}">گزارش</a>
-        <a class="btn btn-warning btn-block" href="{% url 'list_repository' %}">بازگشت</a>
+        <hr>
+        <a class="btn btn-danger btn-block" href="{% url 'list_repository' %}">بازگشت</a>
 {% endblock %}
