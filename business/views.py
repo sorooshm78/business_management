@@ -45,31 +45,36 @@ class UpdateRecordView(View):
     def get(self, request: HttpRequest, record_id):
         record = UpdateRecordView.get_record_by_id(record_id)
         repository = models.Repository.objects.filter(id=record.repository.id).first()
-        form = forms.RecordModelForm(instance=record)
+        form = forms.RecordModelForm(
+            instance=record,
+            user=request.user,
+            repo_id=repository.id,
+            record_type=record.record_type
+        )
 
         calculate_price_when_del_record(repository, record.record_type, record.payment_type, record.price)
 
         return render(request, 'business/update_record.html', {
             'form': form,
-            'repo_id': record.repository.id,
-            'record_id': record.id
         })
 
     def post(self, request: HttpRequest, record_id):
         record = UpdateRecordView.get_record_by_id(record_id)
         repository = models.Repository.objects.filter(id=record.repository.id).first()
-        form = forms.RecordModelForm(request.POST, instance=record)
+        form = forms.RecordModelForm(
+            request.POST,
+            instance=record,
+            user=request.user,
+            repo_id=repository.id,
+            record_type=record.record_type
+        )
         if form.is_valid():
             calculate_price_when_add_record(repository, record.record_type, record.payment_type, record.price)
-            category_id = form.instance.category_display
-            form.instance.category = models.Category.objects.get(id=category_id)
             form.save()
             return redirect(f'/repo/{repository.id}')
 
         return render(request, 'business/update_record.html', {
             'form': form,
-            'repo_id': repository.id,
-            'record_id': record.id
         })
 
 
@@ -78,29 +83,27 @@ class CreateRecordView(CreateView):
     form_class = forms.RecordModelForm
     template_name = 'business/add_record.html'
 
+    def get_form_kwargs(self):
+        kwargs = super(CreateRecordView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['record_type'] = self.request.GET.get('type')
+        kwargs['repo_id'] = self.kwargs.get('repo_id')
+        return kwargs
+
     def get_success_url(self):
         repo_id = str(self.kwargs.get('repo_id'))
         return reverse('detail_repository', kwargs={'repo_id': repo_id})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['repo_id'] = self.kwargs.get('repo_id')
-        return context
-
     def form_valid(self, form):
         repo_id = self.kwargs.get('repo_id')
-        category_id = form.instance.category_display
-
-        form.instance.category = models.Category.objects.get(id=category_id)
-
-        repository = models.Repository.objects.get(id=repo_id)
-        form.instance.repository = repository
-
-        record_type = form.instance.record_type
+        record_type = self.request.GET.get('type')
+        repository = models.Repository.objects.filter(id=repo_id).first()
         payment_type = form.instance.payment_type
         price = form.instance.price
-        calculate_price_when_add_record(repository, record_type, payment_type, price)
 
+        form.instance.repository = repository
+        form.instance.record_type = record_type
+        calculate_price_when_add_record(repository, record_type, payment_type, price)
         return super().form_valid(form)
 
 

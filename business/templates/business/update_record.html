@@ -6,36 +6,8 @@
 {% endblock %}
 
 {% block header_ref %}
-    <script src="{% static "custom.js" %}"></script>
-
     <script>
         $(document).ready(function () {
-                var record_type = $('#record_type').val();
-                var repo_id = $('#repo_id').val();
-                var record_id = $('#record_id').val();
-                $.get('/get-cat-id/' + record_id).then(res => {
-                    var cat_id = res['id'];
-                    $.get('/get-cat-list/?type=' + record_type + '&repo_id=' + repo_id).then(
-                        result => {
-                            var cat_list = result['list'];
-                            $('#cat_dis').append(
-                                new Option("---------", "")
-                            );
-
-                            for (index in cat_list) {
-                                if (cat_id == cat_list[index][1]) {
-                                    $('#cat_dis').append(
-                                        '<option selected="selected" value=' + cat_list[index][1] + '>' + cat_list[index][0] + '</option>'
-                                    );
-                                } else {
-                                    $('#cat_dis').append(
-                                        new Option(cat_list[index][0], cat_list[index][1])
-                                    );
-                                }
-                            }
-                        }
-                    );
-                })
                 $("#date").pDatepicker();
                 $('#date').persianDatepicker({
                     observer: true,
@@ -51,14 +23,11 @@
             }
         )
     </script>
-
 {% endblock %}
 
 {% block content %}
     <div class="container bg-light">
         <form method="post">
-            <input type="hidden" id="repo_id" value="{{ repo_id }}">
-            <input type="hidden" id="record_id" value="{{ record_id }}">
             {% csrf_token %}
             <div class="form-group">
                 {{ form.as_p }}

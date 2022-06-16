@@ -4,12 +4,23 @@ from business import models
 
 
 class RecordModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        repo_id = kwargs.pop('repo_id')
+        record_type = kwargs.pop('record_type')
+        super(RecordModelForm, self).__init__(*args, **kwargs)
+        self.fields['category'].queryset = models.Category.objects.filter(
+            repository_id=repo_id,
+            record_type=record_type,
+            repository__user_id=user.id,
+        )
+
     class Meta:
         model = models.Record
 
         exclude = [
             'repository',
-            'category',
+            'record_type',
         ]
 
         widgets = {
@@ -23,19 +34,10 @@ class RecordModelForm(forms.ModelForm):
                     'class': 'form-control'
                 },
             ),
-            'record_type': forms.Select(
+            'category': forms.Select(
                 attrs={
                     'class': 'form-control',
-                    'id': 'record_type',
-                    'onchange': 'fillCategory()',
-                },
-            ),
-            'category_display': forms.Select(
-                attrs={
-                    'class': 'form-control',
-                    'id': 'cat_dis',
                 }
-
             ),
             'price': forms.TextInput(
                 attrs={
