@@ -1,12 +1,12 @@
 from django import forms
 from django.forms import ModelForm
 
-from business import models
+from category.models import Category
 
 
 class CategoryModelForm(ModelForm):
     class Meta:
-        model = models.Category
+        model = Category
         exclude = [
             'repository'
         ]

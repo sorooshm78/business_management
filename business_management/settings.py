@@ -42,9 +42,10 @@ INSTALLED_APPS = [
 
     # my app
     'user',
-    'business',
+    'repository',
     'category',
     'report',
+    'record',
 ]
 
 MIDDLEWARE = [

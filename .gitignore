@@ -1,1 +1,2 @@
-db.aqlite3
+./db.aqlite3
+/db.sqlite3

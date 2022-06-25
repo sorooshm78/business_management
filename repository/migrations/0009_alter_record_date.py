@@ -4,9 +4,8 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('business', '0008_alter_record_date'),
+        ('repository', '0008_alter_record_date'),
     ]
 
     operations = [

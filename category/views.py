@@ -1,13 +1,15 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView
 
-from business.models import Category, Repository
 from category import forms
+from category.models import Category
+from record.models import Record
+from repository.models import Repository
 
 
 @method_decorator(login_required, 'dispatch')
@@ -62,3 +64,28 @@ def del_category(request: HttpRequest, category_id):
     category.delete()
 
     return redirect(reverse('list_categories', kwargs={'repo_id': repo_id}))
+
+
+@login_required
+def get_cat_dis_id(request: HttpRequest, record_id):
+    record = Record.objects.filter(id=record_id).first()
+    return JsonResponse({
+        'id': record.category_display,
+    })
+
+
+@login_required
+def get_category_list(request: HttpRequest):
+    record_type = request.GET.get('type')
+    repo_id = request.GET.get('repo_id')
+
+    categories = Category.objects.filter(repository_id=repo_id, record_type=record_type,
+                                         repository__user_id=request.user.id)
+
+    cat_list = []
+    for cat in categories:
+        cat_list.append((cat.name, cat.id))
+
+    return JsonResponse({
+        'list': cat_list
+    })

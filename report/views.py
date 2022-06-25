@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from django.shortcuts import render
 from jalali_date import date2jalali
 
-from business import models
+from record.models import Record
 
 MONTH = [
     'فروردین',
@@ -58,7 +58,7 @@ def get_dict_total_record(date, records):
 
 
 def get_records_by_date(request, repo_id, date):
-    return models.Record.objects.filter(
+    return Record.objects.filter(
         date__contains=date,
         repository_id=repo_id,
         repository__user_id=request.user.id
