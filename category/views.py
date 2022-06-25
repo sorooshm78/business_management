@@ -8,6 +8,7 @@ from django.views.generic import ListView, CreateView
 
 from category import forms
 from category.models import Category
+from record import views
 from record.models import Record
 from repository.models import Repository
 
@@ -61,6 +62,11 @@ def del_category(request: HttpRequest, category_id):
         repository__user_id=user_id
     ).first()
     repo_id = category.repository_id
+
+    list_record = Record.objects.filter(category_id=category.id).all()
+    for record in list_record:
+        views.del_record(request, record_id=record.id)
+
     category.delete()
 
     return redirect(reverse('list_categories', kwargs={'repo_id': repo_id}))
