@@ -6,28 +6,16 @@ from repository.models import Repository
 #     input = 'input', 'دریافتی'
 #     output = 'output', 'مخارج'
 #
-#
-# class PaymentType(TextChoices):
-#     cash = 'cash', 'نقدی'
-#     cart = 'cart', 'کارت'
 
 RecordType = [
     ('input', 'دریافتی'),
     ('output', 'مخارج'),
-]
-PaymentType = [
-    ('cash', 'نقدی'),
-    ('cart', 'کارت'),
 ]
 
 
 class Record(models.Model):
     repository = models.ForeignKey(to=Repository, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
-    payment_type = models.CharField(
-        max_length=30,
-        choices=PaymentType,
-    )
     record_type = models.CharField(
         max_length=30,
         choices=RecordType,

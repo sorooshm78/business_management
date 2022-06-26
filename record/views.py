@@ -19,7 +19,7 @@ def del_record(request: HttpRequest, record_id):
     repo_id = record.repository.id
     repository = Repository.objects.filter(id=repo_id).first()
 
-    calculate_price_when_del_record(repository, record.record_type, record.payment_type, record.price)
+    calculate_price_when_del_record(repository, record.record_type, record.price)
 
     record.delete()
     return redirect(reverse('detail_repository', kwargs={'repo_id': repo_id}))
@@ -42,7 +42,7 @@ class UpdateRecordView(View):
             record_type=record.record_type
         )
 
-        calculate_price_when_del_record(repository, record.record_type, record.payment_type, record.price)
+        calculate_price_when_del_record(repository, record.record_type, record.price)
 
         return render(request, 'business/update_record.html', {
             'form': form,
@@ -59,7 +59,7 @@ class UpdateRecordView(View):
             record_type=record.record_type
         )
         if form.is_valid():
-            calculate_price_when_add_record(repository, record.record_type, record.payment_type, record.price)
+            calculate_price_when_add_record(repository, record.record_type, record.price)
             form.save()
             return redirect(f'/repo/{repository.id}')
 
@@ -88,24 +88,23 @@ class CreateRecordView(CreateView):
         repo_id = self.kwargs.get('repo_id')
         record_type = self.request.GET.get('type')
         repository = Repository.objects.filter(id=repo_id).first()
-        payment_type = form.instance.payment_type
         price = form.instance.price
 
         form.instance.repository = repository
         form.instance.record_type = record_type
-        calculate_price_when_add_record(repository, record_type, payment_type, price)
+        calculate_price_when_add_record(repository, record_type, price)
         return super().form_valid(form)
 
 
-def calculate_price_when_add_record(repository, record_type, payment_type, price):
+def calculate_price_when_add_record(repository, record_type, price):
     if record_type == 'input':
-        repository.add_price(payment_type, price)
+        repository.add_price(price)
     elif record_type == 'output':
-        repository.sub_price(payment_type, price)
+        repository.sub_price(price)
 
 
-def calculate_price_when_del_record(repository, record_type, payment_type, price):
+def calculate_price_when_del_record(repository, record_type, price):
     if record_type == 'input':
-        repository.sub_price(payment_type, price)
+        repository.sub_price(price)
     elif record_type == 'output':
-        repository.add_price(payment_type, price)
+        repository.add_price(price)

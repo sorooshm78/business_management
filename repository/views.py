@@ -55,9 +55,8 @@ class RepositoryView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['sum_cart'] = models.Repository.get_sum_cart(self.request.user.id)
-        context['sum_cash'] = models.Repository.get_sum_cash(self.request.user.id)
-
+        context['sum_amount'] = models.Repository.get_sum_amount(self.request.user.id)
+    
         return context
 
 
