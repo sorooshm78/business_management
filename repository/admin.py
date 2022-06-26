@@ -11,13 +11,4 @@ class RepositoryAdmin(admin.ModelAdmin):
     ]
 
 
-# class CategoryAdmin(admin.ModelAdmin):
-#     list_display = [
-#         'name',
-#         'record_type',
-#     ]
-
-
 admin.site.register(models.Repository, RepositoryAdmin)
-# admin.site.register(models.Record)
-# admin.site.register(models.Category, CategoryAdmin)
