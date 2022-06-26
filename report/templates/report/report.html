@@ -45,6 +45,14 @@
                 <td>{{ year.remaining }}</td>
                 <td><a class="btn btn-primary" href="{% url 'detail_report' repo_id %}?date=year">جزیات</a></td>
             </tr>
+            <tr>
+                <td>کل</td>
+                <td>{{ total.date }}</td>
+                <td>{{ total.sum_input }}</td>
+                <td>{{ total.sum_output }}</td>
+                <td>{{ total.remaining }}</td>
+                <td><a class="btn btn-primary" href="{% url 'detail_report' repo_id %}?date=total">جزیات</a></td>
+            </tr>
 
 
             </tbody>

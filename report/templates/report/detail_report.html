@@ -27,6 +27,13 @@
                     <td>{{ record.date }}</td>
                 </tr>
             {% endfor %}
+            <tr>
+                <td>جمع</td>
+                <td>-</td>
+                <td>-</td>
+                <td>{{ sum_records }}</td>
+                <td>-</td>
+            </tr>
             </tbody>
         </table>
         <a class="btn btn-primary btn-block" href="{% url 'report' repo_id %}">بازگشت</a>
