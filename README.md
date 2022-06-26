@@ -8,9 +8,6 @@ website for mange business
   
   2.enter code in terminal:
   ```
-  python manage.py makemigrations
-  ```
-  ```
   python manage.py migrate 
   ```
   
@@ -21,7 +18,7 @@ website for mange business
   
   4.run server by command 
    ```
-    python manage.pu runserver
+    python manage.py runserver
   ```
   
   5.go to admin page
