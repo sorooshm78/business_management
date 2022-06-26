@@ -1,4 +1,5 @@
 # Create your views here.
+import re
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
@@ -8,40 +9,48 @@ from jalali_date import date2jalali
 
 from record.models import Record
 
-MONTH = [
-    'فروردین',
-    'اردیبهشت',
-    'خرداد',
-    'تیر',
-    'مرداد',
-    'شهریور',
-    'مهر',
-    'آبان',
-    'آذر',
-    'دی',
-    'بهمن',
-    'اسفند',
-]
+
+class TodayDate:
+    MONTH = [
+        'فروردین',
+        'اردیبهشت',
+        'خرداد',
+        'تیر',
+        'مرداد',
+        'شهریور',
+        'مهر',
+        'آبان',
+        'آذر',
+        'دی',
+        'بهمن',
+        'اسفند',
+    ]
+
+    today = str(date2jalali(datetime.date(datetime.now()))).replace('-', '/')
+
+    @staticmethod
+    def get_year():
+        return TodayDate.today[:4]
+
+    @staticmethod
+    def get_month():
+        return TodayDate.today[5:7]
+
+    @staticmethod
+    def get_month_name():
+        month = int(TodayDate.get_month())
+        return TodayDate.MONTH[month]
+
+    @staticmethod
+    def get_day():
+        return TodayDate.today[8:]
+
+    @staticmethod
+    def get_today():
+        return TodayDate.today
 
 
-def get_name_month():
-    date_number = int(get_today_date()[5:7])
-    return MONTH[date_number]
-
-
-def get_today_date():
-    return str(date2jalali(datetime.date(datetime.now()))).replace('-', '/')
-
-
-def get_month_date():
-    return str(date2jalali(datetime.date(datetime.now()))).replace('-', '/')[:8]
-
-
-def get_year_date():
-    return str(date2jalali(datetime.date(datetime.now()))).replace('-', '/')[:5]
-
-
-def get_context_dictionary(records, date):
+def get_context(records, display_date):
     sum_input = 0
     sum_output = 0
     for record in records:
@@ -50,11 +59,26 @@ def get_context_dictionary(records, date):
         elif record.record_type == 'output':
             sum_output += record.price
     return {
-        'date': date,
+        'date': display_date,
         'sum_input': sum_input,
         'sum_output': sum_output,
         'remaining': sum_input - sum_output,
     }
+
+
+def convert_date_to_regex(date):
+    today = TodayDate.get_today()
+    month = TodayDate.get_month()
+    year = TodayDate.get_year()
+
+    if date == 'today':
+        return today
+    if date == 'month':
+        return f'{year}/{month}/*'
+    if date == 'year':
+        return f'{year}/*/*'
+    if date == 'total':
+        return r'.*'
 
 
 def get_all_records(request, repo_id):
@@ -64,31 +88,13 @@ def get_all_records(request, repo_id):
     ).order_by('date')
 
 
-def filter_records_by_date(records, date):
+def filter_records_by_date(records, regex_date):
     filter_records = []
     for record in records:
-        if date in record.date:
+        if re.search(regex_date, record.date):
             filter_records.append(record)
 
     return filter_records
-
-
-def get_today_context(records):
-    date = get_today_date()
-    today_records = filter_records_by_date(records, date)
-    return get_context_dictionary(today_records, date)
-
-
-def get_month_context(records):
-    date = get_month_date()
-    month_records = filter_records_by_date(records, date)
-    return get_context_dictionary(month_records, get_name_month())
-
-
-def get_year_context(records):
-    date = get_year_date()
-    years_records = filter_records_by_date(records, date)
-    return get_context_dictionary(years_records, date[:-1])
 
 
 def get_sum_price(records):
@@ -98,25 +104,12 @@ def get_sum_price(records):
     return sum
 
 
-def filter_request_by_date(request, all_records):
-    date = request.GET.get('date')
-    records = None
-    if date == 'today':
-        records = filter_records_by_date(all_records, get_today_date())
-    if date == 'month':
-        records = filter_records_by_date(all_records, get_month_date())
-    if date == 'year':
-        records = filter_records_by_date(all_records, get_year_date())
-    if date == 'total':
-        records = all_records
-    return records
-
-
 @login_required
 def detail_report_view(request: HttpRequest, repo_id):
     all_records = get_all_records(request, repo_id)
 
-    filter_records = filter_request_by_date(request, all_records)
+    date = request.GET.get('date')
+    filter_records = filter_records_by_date(all_records, convert_date_to_regex(date))
 
     return render(
         request,
@@ -130,14 +123,18 @@ def detail_report_view(request: HttpRequest, repo_id):
 
 @login_required
 def report_view(request: HttpRequest, repo_id):
-    records = get_all_records(request, repo_id)
+    all_records = get_all_records(request, repo_id)
+    today_record = filter_records_by_date(all_records, convert_date_to_regex('today'))
+    month_record = filter_records_by_date(all_records, convert_date_to_regex('month'))
+    year_record = filter_records_by_date(all_records, convert_date_to_regex('year'))
+
     return render(
         request,
         'report/report.html', {
             'repo_id': repo_id,
-            'today': get_today_context(records),
-            'month': get_month_context(records),
-            'year': get_year_context(records),
-            'total': get_context_dictionary(get_all_records(request, repo_id), '-')
+            'today': get_context(today_record, TodayDate.get_today()),
+            'month': get_context(month_record, TodayDate.get_month_name()),
+            'year': get_context(year_record, TodayDate.get_year()),
+            'total': get_context(all_records, '-')
         }
     )
