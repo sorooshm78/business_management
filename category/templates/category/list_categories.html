@@ -5,31 +5,29 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container bg-light">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>نام دسته بندی</th>
+            <th>نوع</th>
+            <th>عملیات</th>
+        </tr>
+        </thead>
+        <tbody>
 
-        <table class="table table-hover">
-            <thead>
+        {% for category in categories %}
             <tr>
-                <th>نام دسته بندی</th>
-                <th>نوع</th>
-                <th>عملیات</th>
+                <td>{{ category.name }}</td>
+                <td>{{ category.get_record_type_display }}</td>
+                <td>
+                    <a class="btn btn-danger" href="{% url 'del_category' category.id %}">حذف</a>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-
-            {% for category in categories %}
-                <tr>
-                    <td>{{ category.name }}</td>
-                    <td>{{ category.get_record_type_display }}</td>
-                    <td>
-                        <a class="btn btn-danger" href="{% url 'del_category' category.id %}">حذف</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% endfor %}
+        </tbody>
+    </table>
 
 
-        <a class="btn btn-warning btn-block" href="{% url 'add_category' repo_id %}">افزودن دسته بندی</a>
-        <a class="btn btn-warning btn-block" href="{% url 'detail_repository' repo_id %}">بازگشت</a>
+    <a class="btn btn-primary btn-block" href="{% url 'add_category' repo_id %}">افزودن دسته بندی</a>
+    <a class="btn btn-success btn-block" href="{% url 'detail_repository' repo_id %}">بازگشت</a>
 {% endblock %}

@@ -5,79 +5,80 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="container bg-light col-md-9">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>عنوان</th>
-                        <th>نوع تراکنش</th>
-                        <th>دسته بندی</th>
-                        <th>قیمت</th>
-                        <th>تاریخ</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+    <div class="row">
+        <div class="container bg-light col-md-9">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>عنوان</th>
+                    <th>نوع تراکنش</th>
+                    <th>دسته بندی</th>
+                    <th>قیمت</th>
+                    <th>تاریخ</th>
+                </tr>
+                </thead>
+                <tbody>
 
-                    {% for record in records %}
-                        <tr>
-                            <td>{{ record.title }}</td>
-                            <td>{{ record.get_record_type_display }}</td>
-                            <td>{{ record.category }}</td>
-                            <td>{{ record.price }}</td>
-                            <td>{{ record.date }}</td>
-                        </tr>
-                    {% endfor %}
+                {% for record in records %}
                     <tr>
-                        <td>جمع</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>{{ sum_records }}</td>
-                        <td>-</td>
+                        <td>{{ record.title }}</td>
+                        <td>{{ record.get_record_type_display }}</td>
+                        <td>{{ record.category }}</td>
+                        <td>{{ record.price }}</td>
+                        <td>{{ record.date }}</td>
                     </tr>
-                    </tbody>
-                </table>
-                <a class="btn btn-primary btn-block" href="{% url 'report' repo_id %}">بازگشت</a>
+                {% endfor %}
+                <tr>
+                    <td>جمع</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>{{ sum_records }}</td>
+                    <td>-</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="container bg-light col-md-3">
+            <p class="text-center font-weight-bold">فیلترها</p>
+            <div class="card">
+                <div class="card-header bg-warning text-center">
+                    تراکنش
+                </div>
+                <ul class="list-group list-group-flush">
+                    <a href="{{ current_url }}&record_type=input">
+                        <li class="list-group-item text-center">دریافتی</li>
+                    </a>
+                    <a href="{{ current_url }}&record_type=output">
+                        <li class="list-group-item text-center">پرداختی</li>
+                    </a>
+                </ul>
             </div>
-            <div class="container bg-light col-md-3">
-                <p class="text-center font-weight-bold">فیلترها</p>
-                <div class="card">
-                    <div class="card-header bg-primary text-center">
-                        تراکنش
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <a href="{{ current_url }}&record_type=input">
-                            <li class="list-group-item text-center">دریافتی</li>
-                        </a>
-                        <a href="{{ current_url }}&record_type=output">
-                            <li class="list-group-item text-center">پرداختی</li>
-                        </a>
-                    </ul>
+            <div class="card">
+                <div class="card-header bg-warning text-center">
+                    دسته بندی
                 </div>
-                <div class="card">
-                    <div class="card-header bg-primary text-center">
-                        دسته بندی
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        {% for category in categories %}
-                            <a href="{{ current_url }}&cat={{ category.id }}">
-                                <li class="list-group-item text-center">{{ category.name }}</li>
-                            </a>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="card">
-                    <div class="card-header bg-primary text-center">
-                        کل
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <a href="{{ current_url }}">
-                            <li class="list-group-item text-center">همه</li>
+                <ul class="list-group list-group-flush">
+                    {% for category in categories %}
+                        <a href="{{ current_url }}&cat={{ category.id }}">
+                            <li class="list-group-item text-center">{{ category.name }}</li>
                         </a>
-                    </ul>
-                </div>
+                    {% endfor %}
+                </ul>
             </div>
+            <div class="card">
+                <div class="card-header bg-warning text-center">
+                    کل
+                </div>
+                <ul class="list-group list-group-flush">
+                    <a href="{{ current_url }}">
+                        <li class="list-group-item text-center">همه</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="container mt-5 mb-5">
+            <a class="btn btn-success btn-block" href="{% url 'report' repo_id %}">بازگشت</a>
         </div>
 
     </div>

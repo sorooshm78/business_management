@@ -7,41 +7,41 @@
 
 
 {% block content %}
+    <div class="card bg-info text-center">
+        <div class="card-body">
+            <h4 class="card-title">صحفه اصلی</h4>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>نام مخزن</th>
+            <th>موجودی</th>
+            <th>عملیات</th>
 
-    <div class="container bg-light">
-
-        <table class="table table-hover">
-            <thead>
+        </tr>
+        </thead>
+        <tbody>
+        {% for repository in repositories %}
             <tr>
-                <th>نام مخزن</th>
-                <th>موجودی</th>
-                <th>عملیات</th>
-
+                <td>{{ repository.name }}</td>
+                <td>{{ repository.amount }}</td>
+                <td>
+                    <a class="btn btn-danger" href="{% url 'del_repository' repository.id %}">حذف</a>
+                    <a class="btn btn-warning" href="{% url 'detail_repository' repository.id %}">جزیات</a>
+                </td>
             </tr>
-            </thead>
-            <tbody>
+        {% endfor %}
 
-            {% for repository in repositories %}
-                <tr>
-                    <td>{{ repository.name }}</td>
-                    <td>{{ repository.amount }}</td>
-                    <td>
-                        <a class="btn btn-danger" href="{% url 'del_repository' repository.id %}">حذف</a>
-                        <a class="btn btn-success" href="{% url 'detail_repository' repository.id %}">جزیات</a>
-                    </td>
-                </tr>
-            {% endfor %}
+        <thead>
+        <tr>
+            <th>جمع</th>
+            <th>{{ sum_amount }}</th>
+        </tr>
+        </thead>
 
-            <thead>
-            <tr>
-                <th>جمع</th>
-                <th>{{ sum_amount }}</th>
-            </tr>
-            </thead>
+        </tbody>
+    </table>
 
-            </tbody>
-        </table>
-
-
-        <a class="btn btn-warning btn-block" href="{% url 'new_repository' %}">افزودن مخزن</a>
+    <a class="btn btn-primary btn-block mt-5" href="{% url 'new_repository' %}">افزودن مخزن</a>
 {% endblock %}

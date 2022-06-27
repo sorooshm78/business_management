@@ -44,7 +44,7 @@ class UpdateRecordView(View):
 
         calculate_price_when_del_record(repository, record.record_type, record.price)
 
-        return render(request, 'business/update_record.html', {
+        return render(request, 'business/templates/record/update_record.html', {
             'form': form,
         })
 
@@ -63,7 +63,7 @@ class UpdateRecordView(View):
             form.save()
             return redirect(f'/repo/{repository.id}')
 
-        return render(request, 'business/update_record.html', {
+        return render(request, 'record/update_record.html', {
             'form': form,
         })
 
@@ -71,7 +71,7 @@ class UpdateRecordView(View):
 @method_decorator(login_required, name='dispatch')
 class CreateRecordView(CreateView):
     form_class = forms.RecordModelForm
-    template_name = 'business/add_record.html'
+    template_name = 'record/add_record.html'
 
     def get_form_kwargs(self):
         kwargs = super(CreateRecordView, self).get_form_kwargs()

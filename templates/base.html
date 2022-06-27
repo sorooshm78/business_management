@@ -17,11 +17,16 @@
 
 
 <body>
-<div class="container">
-    <a class="btn btn-danger btn-block" href="{% url 'logout' %}">خروج</a>
+
+<div class="container text-right mt-2 mb-5">
+    <a class="btn btn-danger" href="{% url 'logout' %}">خروج</a>
+    <a class="btn btn-success" href="{% url 'list_repository' %}">صحفه اصلی</a>
 </div>
 
-{% block content %}{% endblock %}
+<div class="container mb-5 mt-5 bg-light">
+    {% block content %}{% endblock %}
+</div>
+
 </body>
 
 {% block footer_ref %}{% endblock %}
