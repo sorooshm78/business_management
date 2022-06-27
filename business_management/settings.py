@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'category',
     'report',
     'record',
+    'custom_tags',
 ]
 
 MIDDLEWARE = [

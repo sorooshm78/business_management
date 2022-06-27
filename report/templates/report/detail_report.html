@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load math_filter %}
 
 {% block title %}
     جزیات گزارش
@@ -15,10 +16,11 @@
                     <th>دسته بندی</th>
                     <th>قیمت</th>
                     <th>تاریخ</th>
+                    <th>درصد</th>
                 </tr>
                 </thead>
                 <tbody>
-
+                {% load math_filter %}
                 {% for record in records %}
                     <tr>
                         <td>{{ record.title }}</td>
@@ -26,6 +28,7 @@
                         <td>{{ record.category }}</td>
                         <td>{{ record.price }}</td>
                         <td>{{ record.date }}</td>
+                        <td>{{ record.price|percent:sum_records }} %</td>
                     </tr>
                 {% endfor %}
                 <tr>
@@ -34,6 +37,7 @@
                     <td>-</td>
                     <td>{{ sum_records }}</td>
                     <td>-</td>
+                    <td>100 %</td>
                 </tr>
                 </tbody>
             </table>
@@ -56,12 +60,24 @@
             </div>
             <div class="card">
                 <div class="card-header bg-warning text-center">
-                    دسته بندی
+                    دسته بندی دریافتی ها
                 </div>
                 <ul class="list-group list-group-flush">
-                    {% for category in categories %}
-                        <a href="{{ current_url }}&cat={{ category.id }}">
-                            <li class="list-group-item text-center">{{ category.name }}</li>
+                    {% for cat in input_cat %}
+                        <a href="{{ current_url }}&cat={{ cat.id }}">
+                            <li class="list-group-item text-center">{{ cat.name }}</li>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header bg-warning text-center">
+                    دسته بندی پرداختی ها
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for cat in output_cat %}
+                        <a href="{{ current_url }}&cat={{ cat.id }}">
+                            <li class="list-group-item text-center">{{ cat.name }}</li>
                         </a>
                     {% endfor %}
                 </ul>
@@ -80,6 +96,5 @@
         <div class="container mt-5 mb-5">
             <a class="btn btn-success btn-block" href="{% url 'report' repo_id %}">بازگشت</a>
         </div>
-
     </div>
 {% endblock %}

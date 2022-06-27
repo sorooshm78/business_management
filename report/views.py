@@ -111,10 +111,6 @@ def get_sum_price(records):
 @login_required
 def detail_report_view(request: HttpRequest, repo_id):
     all_records = get_all_records(request, repo_id)
-    categories = Category.objects.filter(
-        repository_id=repo_id,
-        repository__user_id=request.user.id,
-    )
 
     date = request.GET.get('date')
     filter_records = filter_records_by_date(all_records, convert_date_to_regex(date))
@@ -127,13 +123,26 @@ def detail_report_view(request: HttpRequest, repo_id):
     if cat_id is not None:
         filter_records = filter_records_by_cat(filter_records, cat_id)
 
+    categories = Category.objects.filter(
+        repository_id=repo_id,
+        repository__user_id=request.user.id,
+    )
+    input_cat = []
+    output_cat = []
+    for cat in categories:
+        if cat.record_type == 'input':
+            input_cat.append(cat)
+        if cat.record_type == 'output':
+            output_cat.append(cat)
+
     return render(
         request,
         'report/detail_report.html', {
             'current_url': f'{request.path}?date={date}',
             'records': filter_records,
             'repo_id': repo_id,
-            'categories': categories,
+            'input_cat': input_cat,
+            'output_cat': output_cat,
             'sum_records': get_sum_price(filter_records),
         }
     )
