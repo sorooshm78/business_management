@@ -7,6 +7,7 @@ from django.http import HttpRequest
 from django.shortcuts import render
 from jalali_date import date2jalali
 
+from category.models import Category
 from record.models import Record
 
 
@@ -89,12 +90,15 @@ def get_all_records(request, repo_id):
 
 
 def filter_records_by_date(records, regex_date):
-    filter_records = []
-    for record in records:
-        if re.search(regex_date, record.date):
-            filter_records.append(record)
+    return [record for record in records if re.search(regex_date, record.date)]
 
-    return filter_records
+
+def filter_records_by_record_type(records, record_type):
+    return [record for record in records if record.record_type == record_type]
+
+
+def filter_records_by_cat(records, cat_id):
+    return [record for record in records if record.category_id == int(cat_id)]
 
 
 def get_sum_price(records):
@@ -107,16 +111,30 @@ def get_sum_price(records):
 @login_required
 def detail_report_view(request: HttpRequest, repo_id):
     all_records = get_all_records(request, repo_id)
+    categories = Category.objects.filter(
+        repository_id=repo_id,
+        repository__user_id=request.user.id,
+    )
 
     date = request.GET.get('date')
     filter_records = filter_records_by_date(all_records, convert_date_to_regex(date))
 
+    record_type = request.GET.get('record_type')
+    if record_type is not None:
+        filter_records = filter_records_by_record_type(filter_records, record_type)
+
+    cat_id = request.GET.get('cat')
+    if cat_id is not None:
+        filter_records = filter_records_by_cat(filter_records, cat_id)
+
     return render(
         request,
         'report/detail_report.html', {
+            'current_url': f'{request.path}?date={date}',
             'records': filter_records,
             'repo_id': repo_id,
-            'sum_records': get_sum_price(filter_records)
+            'categories': categories,
+            'sum_records': get_sum_price(filter_records),
         }
     )
 
