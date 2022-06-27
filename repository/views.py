@@ -56,7 +56,7 @@ class RepositoryView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['sum_amount'] = models.Repository.get_sum_amount(self.request.user.id)
-    
+
         return context
 
 
@@ -82,12 +82,12 @@ class NewRepositoryView(View):
 
         Category(
             repository_id=new_repo.id,
-            name='سایر',
+            name='سایر (دریافتی)',
             record_type='input',
         ).save()
         Category(
             repository_id=new_repo.id,
-            name='سایر',
+            name='سایر (پرداختی)',
             record_type='output',
         ).save()
 
