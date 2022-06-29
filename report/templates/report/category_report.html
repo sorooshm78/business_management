@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load math_filter %}
+
+{% block title %}
+    گزارش دسته بندی
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="container bg-primary mb-3 mt-5 ml-3 mr-3 rounded">
+            <table class="table table-hover">
+                <h3 class="text-center">دسته بندی های دریافتی</h3>
+                <thead>
+                <tr>
+                    <th>نام دسته بندی</th>
+                    <th>مقدار</th>
+                    <th>درصد</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% load math_filter %}
+                {% for input in input_category_data %}
+                    <tr>
+                        <td>{{ input.name }}</td>
+                        <td>{{ input.val|default_if_none:0 }}</td>
+                        <td>{{ input.val|percent:sum_input_category|default_if_none:0 }} %</td>
+                    </tr>
+                {% endfor %}
+
+                <tr>
+                    <td>جمع</td>
+                    <td>{{ sum_input_category }}</td>
+                    <td>
+                        {% if sum_input_category == 0 %}
+                            0 %
+                        {% else %}
+                            100 %
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <hr>
+        <div class="container bg-warning ml-3 mr-3 rounded">
+            <table class="table table-hover rounded">
+                <h3 class="text-center">دسته بندی های پرداختی</h3>
+                <thead>
+                <tr>
+                    <th>نام دسته بندی</th>
+                    <th>مقدار</th>
+                    <th>درصد</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% load math_filter %}
+                {% for output in output_category_data %}
+                    <tr>
+                        <td>{{ output.name }}</td>
+                        <td>{{ output.val|default_if_none:0 }}</td>
+                        <td>{{ output.val|percent:sum_output_category|default_if_none:0 }} %</td>
+                    </tr>
+                {% endfor %}
+
+                <tr>
+                    <td>جمع</td>
+                    <td>{{ sum_output_category }}</td>
+                    <td>
+                        {% if sum_output_category == 0 %}
+                            0 %
+                        {% else %}
+                            100 %
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="container mt-5 mb-5">
+            <a class="btn btn-success btn-block" href="{% url 'report' repo_id %}">بازگشت</a>
+        </div>
+    </div>
+{% endblock %}

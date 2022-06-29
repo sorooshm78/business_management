@@ -101,7 +101,7 @@ def filter_records_by_cat(records, cat_id):
     return [record for record in records if record.category_id == int(cat_id)]
 
 
-def get_sum_price(records):
+def get_sum_record_price(records):
     sum = 0
     for record in records:
         sum += int(record.price)
@@ -109,7 +109,7 @@ def get_sum_price(records):
 
 
 @login_required
-def detail_report_view(request: HttpRequest, repo_id):
+def record_report_view(request: HttpRequest, repo_id):
     all_records = get_all_records(request, repo_id)
 
     date = request.GET.get('date')
@@ -137,13 +137,13 @@ def detail_report_view(request: HttpRequest, repo_id):
 
     return render(
         request,
-        'report/detail_report.html', {
+        'report/record_report.html', {
             'current_url': f'{request.path}?date={date}',
             'records': filter_records,
             'repo_id': repo_id,
             'input_cat': input_cat,
             'output_cat': output_cat,
-            'sum_records': get_sum_price(filter_records),
+            'sum_records': get_sum_record_price(filter_records),
         }
     )
 
@@ -165,3 +165,55 @@ def report_view(request: HttpRequest, repo_id):
             'total': get_context(all_records, '-')
         }
     )
+
+
+def filter_records_by_category(records, cat_name):
+    return [r for r in records if r.category.name == cat_name]
+
+
+def get_sum_val_category(category_list):
+    sum = 0
+    for cat in category_list:
+        sum += cat['val']
+
+    return sum
+
+
+@login_required
+def category_report_view(request: HttpRequest, repo_id):
+    all_records = get_all_records(request, repo_id)
+    categories = Category.objects.filter(
+        repository_id=repo_id,
+        repository__user_id=request.user.id,
+    )
+
+    date = request.GET.get('date')
+    filter_records = filter_records_by_date(all_records, convert_date_to_regex(date))
+
+    input_cayegory_data = []
+    output_cayegory_data = []
+
+    for category in categories:
+        if category.record_type == 'input':
+            input_cayegory_data.append({
+                'name': category.name,
+                'val': get_sum_record_price(filter_records_by_category(filter_records, category.name)),
+            })
+            continue
+        if category.record_type == 'output':
+            output_cayegory_data.append({
+                'name': category.name,
+                'val': get_sum_record_price(filter_records_by_category(filter_records, category.name)),
+            })
+
+    sum_input_category = get_sum_val_category(input_cayegory_data)
+    sum_output_category = get_sum_val_category(output_cayegory_data)
+
+    return render(request, 'report/category_report.html', {
+        'repo_id': repo_id,
+        'input_category_data': input_cayegory_data,
+        'sum_input_category': sum_input_category,
+
+        'output_category_data': output_cayegory_data,
+        'sum_output_category': sum_output_category,
+    })

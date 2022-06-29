@@ -16,14 +16,14 @@
 </head>
 
 
-<body>
+<body style="background-color: #9bc1e3">
 
 <div class="container text-right mt-2 mb-5">
     <a class="btn btn-danger" href="{% url 'logout' %}">خروج</a>
     <a class="btn btn-success" href="{% url 'list_repository' %}">صحفه اصلی</a>
 </div>
 
-<div class="container mb-5 mt-5 bg-light">
+<div class="container mb-5 mt-5 bg-light rounded pt-3 pb-5">
     {% block content %}{% endblock %}
 </div>
 
