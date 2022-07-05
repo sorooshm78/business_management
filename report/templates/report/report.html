@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load digit_filter %}
 
 {% block title %}
     گزارش
@@ -23,9 +24,9 @@
         <tr>
             <td>روز</td>
             <td> {{ today.date }}</td>
-            <td>{{ today.sum_input }}</td>
-            <td>{{ today.sum_output }}</td>
-            <td>{{ today.remaining }}</td>
+            <td>{{ today.sum_input|number_format }}</td>
+            <td>{{ today.sum_output|number_format }}</td>
+            <td>{{ today.remaining|number_format }}</td>
             <td>
                 <a class="btn btn-warning" href="{% url 'record_report' repo_id %}?date=today"> جزیات رکورد</a>
                 <a class="btn btn-warning" href="{% url 'category_report' repo_id %}?date=today"> جزیات دسته بندی</a>
@@ -34,9 +35,9 @@
         <tr>
             <td>ماه</td>
             <td>{{ month.date }}</td>
-            <td>{{ month.sum_input }}</td>
-            <td>{{ month.sum_output }}</td>
-            <td>{{ month.remaining }}</td>
+            <td>{{ month.sum_input|number_format }}</td>
+            <td>{{ month.sum_output|number_format }}</td>
+            <td>{{ month.remaining|number_format }}</td>
             <td>
                 <a class="btn btn-warning" href="{% url 'record_report' repo_id %}?date=month">جزیات رکورد</a>
                 <a class="btn btn-warning" href="{% url 'category_report' repo_id %}?date=month">جزیات دسته بندی</a>
@@ -45,9 +46,9 @@
         <tr>
             <td>سال</td>
             <td>{{ year.date }}</td>
-            <td>{{ year.sum_input }}</td>
-            <td>{{ year.sum_output }}</td>
-            <td>{{ year.remaining }}</td>
+            <td>{{ year.sum_input|number_format }}</td>
+            <td>{{ year.sum_output|number_format }}</td>
+            <td>{{ year.remaining|number_format }}</td>
             <td>
                 <a class="btn btn-warning" href="{% url 'record_report' repo_id %}?date=year">جزیات رکورد</a>
                 <a class="btn btn-warning" href="{% url 'category_report' repo_id %}?date=year">جزیات دسته بندی</a>
@@ -56,9 +57,9 @@
         <tr>
             <td>کل</td>
             <td>{{ total.date }}</td>
-            <td>{{ total.sum_input }}</td>
-            <td>{{ total.sum_output }}</td>
-            <td>{{ total.remaining }}</td>
+            <td>{{ total.sum_input|number_format }}</td>
+            <td>{{ total.sum_output|number_format }}</td>
+            <td>{{ total.remaining|number_format }}</td>
             <td>
                 <a class="btn btn-warning" href="{% url 'record_report' repo_id %}?date=total">جزیات رکورد</a>
                 <a class="btn btn-warning" href="{% url 'category_report' repo_id %}?date=total">جزیات دسته بندی</a>

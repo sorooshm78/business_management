@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load digit_filter %}
 
 {% block title %}
     مخزن {{ repo.name }}
@@ -8,7 +9,7 @@
     <div class="card bg-info text-center">
         <div class="card-body">
             <h4 class="card-title">{{ repo.name }}</h4>
-            <p class="card-text">موجودی مخزن : {{ repo.amount }}</p>
+            <p class="card-text">موجودی مخزن : {{ repo.amount|number_format }}</p>
         </div>
     </div>
     <table class="table table-hover">
@@ -29,7 +30,7 @@
                 <td>{{ record.title }}</td>
                 <td>{{ record.get_record_type_display }}</td>
                 <td>{{ record.category }}</td>
-                <td>{{ record.price }}</td>
+                <td>{{ record.price|number_format }}</td>
                 <td>{{ record.date }}</td>
                 <td>
                     <a class="btn btn-danger" href="{% url 'del_record' record.id %}">حذف</a>

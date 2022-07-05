@@ -1,2 +1,6 @@
 ./db.aqlite3
 /db.sqlite3
+*/__pycache__
+*/templates/__pycache__
+*/migrations/__pycache__
+custom_tags/templatetags/__pycache__/*

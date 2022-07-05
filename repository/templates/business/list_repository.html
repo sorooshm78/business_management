@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load digit_filter %}
 
 {% block title %}
     مخزن ها
@@ -25,7 +26,7 @@
         {% for repository in repositories %}
             <tr>
                 <td>{{ repository.name }}</td>
-                <td>{{ repository.amount }}</td>
+                <td>{{ repository.amount|number_format }}</td>
                 <td>
                     <a class="btn btn-danger" href="{% url 'del_repository' repository.id %}">حذف</a>
                     <a class="btn btn-warning" href="{% url 'detail_repository' repository.id %}">جزیات</a>
@@ -36,7 +37,7 @@
         <thead>
         <tr>
             <th>جمع</th>
-            <th>{{ sum_amount }}</th>
+            <th>{{ sum_amount|number_format }}</th>
         </tr>
         </thead>
 

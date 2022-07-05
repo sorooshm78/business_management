@@ -44,7 +44,7 @@ class UpdateRecordView(View):
 
         calculate_price_when_del_record(repository, record.record_type, record.price)
 
-        return render(request, 'business/templates/record/update_record.html', {
+        return render(request, 'record/update_record.html', {
             'form': form,
         })
 

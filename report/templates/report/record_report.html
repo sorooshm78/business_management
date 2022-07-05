@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load math_filter %}
+{% load digit_filter %}
 
 {% block title %}
     گزارش رکوردها
@@ -26,7 +27,7 @@
                         <td>{{ record.title }}</td>
                         <td>{{ record.get_record_type_display }}</td>
                         <td>{{ record.category }}</td>
-                        <td>{{ record.price }}</td>
+                        <td>{{ record.price|number_format }}</td>
                         <td>{{ record.date }}</td>
                         <td>{{ record.price|percent:sum_records }} %</td>
                     </tr>
@@ -35,7 +36,7 @@
                     <td>جمع</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>{{ sum_records }}</td>
+                    <td>{{ sum_records|number_format }}</td>
                     <td>-</td>
                     <td>100 %</td>
                 </tr>
