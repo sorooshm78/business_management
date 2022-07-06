@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
 from record import forms
 from record.models import Record
@@ -94,6 +94,23 @@ class CreateRecordView(CreateView):
         form.instance.record_type = record_type
         calculate_price_when_add_record(repository, record_type, price)
         return super().form_valid(form)
+
+
+@method_decorator(login_required, name='dispatch')
+class DetailRecordView(DetailView):
+    model = Record
+    template_name = 'record/detail_record.html'
+    context_object_name = 'record'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        record_id = self.kwargs['pk']
+        repo = Repository.objects.get(
+            record__id=record_id,
+            user_id=self.request.user.id
+        )
+        context['repo_id'] = repo.id
+        return context
 
 
 def calculate_price_when_add_record(repository, record_type, price):

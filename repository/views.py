@@ -92,3 +92,6 @@ class NewRepositoryView(View):
         ).save()
 
         return redirect(reverse('list_repository'))
+
+# @method_decorator(login_required, name='dispatch')
+# class NewRepositoryView():

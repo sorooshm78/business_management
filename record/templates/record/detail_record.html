@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load digit_filter %}
+
+{% block title %}
+    جزییات رکورد
+{% endblock %}
+
+{% block content %}
+    <table class="table table-hover table-light">
+        <tbody>
+        <tr>
+            <th scope="col">name</th>
+            <td>{{ record.title }}</td>
+        </tr>
+        <tr>
+            <th scope="col">record type</th>
+            <td>{{ record.get_record_type_display }}</td>
+        </tr>
+
+        <tr>
+            <th scope="col">category</th>
+            <td>{{ record.category }}</td>
+        </tr>
+        <tr>
+            <th scope="col">price</th>
+            <td>{{ record.price|number_format }}</td>
+        </tr>
+        <tr>
+            <th scope="col">data</th>
+            <td>{{ record.date }}</td>
+        </tr>
+
+        <tr>
+            <th scope="col">comment</th>
+            <td>{{ record.comment }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-success btn-block" href="{% url 'detail_repository' repo_id %}">بازگشت</a>
+{% endblock %}

@@ -35,6 +35,7 @@
                 <td>
                     <a class="btn btn-danger" href="{% url 'del_record' record.id %}">حذف</a>
                     <a class="btn btn-warning" href="{% url 'update_record' record.id %}">ویرایش</a>
+                    <a class="btn btn-success" href="{% url 'detail_record' record.id %}">جزییات</a>
                 </td>
             </tr>
         {% endfor %}
