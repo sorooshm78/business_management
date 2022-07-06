@@ -16,3 +16,21 @@ class LoginModelForms(forms.Form):
             }
         )
     )
+
+
+class ChangePassModelForms(forms.Form):
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
