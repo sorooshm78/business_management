@@ -20,7 +20,12 @@
                 <td>{{ category.name }}</td>
                 <td>{{ category.get_record_type_display }}</td>
                 <td>
-                    <a class="btn btn-danger" href="{% url 'del_category' category.id %}">حذف</a>
+                    {% url 'del_category' category.id  as del_url %}
+                    {% include 'modals/delete.html' with url=del_url %}
+                    <button class="btn btn-danger" type="button" onclick="delBtnOnClick()" data-toggle="modal"
+                            data-target="#delModal">
+                        حذف
+                    </button>
                     <a class="btn btn-warning" href="{% url 'update_category' category.id %}">ویرایش</a>
                 </td>
             </tr>

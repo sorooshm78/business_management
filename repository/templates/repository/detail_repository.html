@@ -33,7 +33,12 @@
                 <td>{{ record.price|number_format }}</td>
                 <td>{{ record.date }}</td>
                 <td>
-                    <a class="btn btn-danger" href="{% url 'del_record' record.id %}">حذف</a>
+                    {% url 'del_record' record.id  as del_url %}
+                    {% include 'modals/delete.html' with url=del_url %}
+                    <button class="btn btn-danger" type="button" onclick="delBtnOnClick()" data-toggle="modal"
+                            data-target="#delModal">
+                        حذف
+                    </button>
                     <a class="btn btn-warning" href="{% url 'update_record' record.id %}">ویرایش</a>
                     <a class="btn btn-success" href="{% url 'detail_record' record.id %}">جزییات</a>
                 </td>

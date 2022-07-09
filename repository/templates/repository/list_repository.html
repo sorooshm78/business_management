@@ -28,7 +28,12 @@
                 <td>{{ repository.name }}</td>
                 <td>{{ repository.amount|number_format }}</td>
                 <td>
-                    <a class="btn btn-danger" href="{% url 'del_repository' repository.id %}">حذف</a>
+                    {% url 'del_repository' repository.id as del_url %}
+                    {% include 'modals/delete.html' with url=del_url %}
+                    <button class="btn btn-danger" type="button" onclick="delBtnOnClick()" data-toggle="modal"
+                            data-target="#delModal">
+                        حذف
+                    </button>
                     <a class="btn btn-warning" href="{% url 'detail_repository' repository.id %}">جزیات</a>
                     <a class="btn btn-primary" href="{% url 'update_repository' repository.id %}">ویرایش</a>
                 </td>
