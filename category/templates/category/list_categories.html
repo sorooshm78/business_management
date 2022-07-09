@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'modals/delete.html' %}
     <table class="table table-hover">
         <thead>
         <tr>
@@ -20,9 +21,8 @@
                 <td>{{ category.name }}</td>
                 <td>{{ category.get_record_type_display }}</td>
                 <td>
-                    {% url 'del_category' category.id  as del_url %}
-                    {% include 'modals/delete.html' with url=del_url %}
-                    <button class="btn btn-danger" type="button" onclick="delBtnOnClick()" data-toggle="modal"
+                    <button class="btn btn-danger" type="button"
+                            onclick="delBtnOnClick('{% url 'del_category' category.id %}')" data-toggle="modal"
                             data-target="#delModal">
                         حذف
                     </button>

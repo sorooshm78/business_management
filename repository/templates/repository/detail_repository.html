@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'modals/delete.html' %}
     <div class="card bg-info text-center">
         <div class="card-body">
             <h4 class="card-title">{{ repo.name }}</h4>
@@ -33,9 +34,8 @@
                 <td>{{ record.price|number_format }}</td>
                 <td>{{ record.date }}</td>
                 <td>
-                    {% url 'del_record' record.id  as del_url %}
-                    {% include 'modals/delete.html' with url=del_url %}
-                    <button class="btn btn-danger" type="button" onclick="delBtnOnClick()" data-toggle="modal"
+                    <button class="btn btn-danger" type="button"
+                            onclick="delBtnOnClick('{% url 'del_record' record.id %}')" data-toggle="modal"
                             data-target="#delModal">
                         حذف
                     </button>

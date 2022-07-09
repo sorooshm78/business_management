@@ -8,6 +8,7 @@
 
 
 {% block content %}
+    {% include 'modals/delete.html' %}
     <div class="card bg-info text-center">
         <div class="card-body">
             <h4 class="card-title">صحفه اصلی</h4>
@@ -28,9 +29,8 @@
                 <td>{{ repository.name }}</td>
                 <td>{{ repository.amount|number_format }}</td>
                 <td>
-                    {% url 'del_repository' repository.id as del_url %}
-                    {% include 'modals/delete.html' with url=del_url %}
-                    <button class="btn btn-danger" type="button" onclick="delBtnOnClick()" data-toggle="modal"
+                    <button class="btn btn-danger" type="button"
+                            onclick="delBtnOnClick('{% url 'del_repository' repository.id %}')" data-toggle="modal"
                             data-target="#delModal">
                         حذف
                     </button>
