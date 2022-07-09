@@ -4,13 +4,29 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 
 from category import forms
 from category.models import Category
 from record import views
 from record.models import Record
 from repository.models import Repository
+
+
+@method_decorator(login_required, 'dispatch')
+class UpdateCategoryView(UpdateView):
+    model = Category
+    fields = [
+        'name'
+    ]
+    template_name = 'category/update_category.html'
+
+    def get_success_url(self):
+        cat_id = self.kwargs.get('pk')
+        cat = Category.objects.filter(id=cat_id).first()
+        repo_id = cat.repository.id
+
+        return reverse('list_categories', args=[repo_id, ])
 
 
 @method_decorator(login_required, 'dispatch')
