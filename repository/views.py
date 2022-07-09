@@ -15,7 +15,7 @@ from repository import models
 @method_decorator(login_required, name='dispatch')
 class DetailRepositoryView(ListView):
     model = Record
-    template_name = 'business/detail_repository.html'
+    template_name = 'repository/detail_repository.html'
     context_object_name = 'records'
 
     @staticmethod
@@ -45,7 +45,7 @@ class DetailRepositoryView(ListView):
 @method_decorator(login_required, name='dispatch')
 class RepositoryView(ListView):
     model = models.Repository
-    template_name = 'business/list_repository.html'
+    template_name = 'repository/list_repository.html'
     context_object_name = 'repositories'
 
     def get_queryset(self):
@@ -69,7 +69,7 @@ def del_repository(request: HttpRequest, repo_id):
 @method_decorator(login_required, name='dispatch')
 class NewRepositoryView(View):
     def get(self, request: HttpRequest):
-        return render(request, 'business/new_repository.html')
+        return render(request, 'repository/new_repository.html')
 
     def post(self, request: HttpRequest):
         repo_name = request.POST.get('repo_name')
@@ -100,7 +100,7 @@ class UpdateRepositoryView(UpdateView):
     fields = [
         'name',
     ]
-    template_name = 'business/update_repository.html'
+    template_name = 'repository/update_repository.html'
 
     def get_success_url(self):
         return reverse('list_repository')
