@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    ویرایش مخزن
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success btn-block">ثبت</button>
+    </form>
+{% endblock %}

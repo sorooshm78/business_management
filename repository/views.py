@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 
 from category.models import Category
 from record.models import Record
@@ -93,5 +93,14 @@ class NewRepositoryView(View):
 
         return redirect(reverse('list_repository'))
 
-# @method_decorator(login_required, name='dispatch')
-# class NewRepositoryView():
+
+@method_decorator(login_required, name='dispatch')
+class UpdateRepositoryView(UpdateView):
+    model = models.Repository
+    fields = [
+        'name',
+    ]
+    template_name = 'business/update_repository.html'
+
+    def get_success_url(self):
+        return reverse('list_repository')

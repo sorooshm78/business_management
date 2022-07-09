@@ -30,6 +30,7 @@
                 <td>
                     <a class="btn btn-danger" href="{% url 'del_repository' repository.id %}">حذف</a>
                     <a class="btn btn-warning" href="{% url 'detail_repository' repository.id %}">جزیات</a>
+                    <a class="btn btn-primary" href="{% url 'update_repository' repository.id %}">ویرایش</a>
                 </td>
             </tr>
         {% endfor %}
