@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    حساب کاربری
+{% endblock %}
+
+{% block content %}
+    <table class="table table-hover table-light">
+        <tbody>
+        <tr>
+            <th scope="col">username</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th scope="col">firstname</th>
+            <td>{{ user.first_name }}</td>
+        </tr>
+        <tr>
+            <th scope="col">lastname</th>
+            <td>{{ user.last_name }}</td>
+        </tr>
+        <tr>
+            <th scope="col">email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary btn-block" href="{% url 'edit_profile' %}">ویرایش</a>
+    <a class="btn btn-primary btn-block" href="{% url 'change_password' %}">تغییر رمز</a>
+    <a class="btn btn-success btn-block" href="{% url 'list_repository' %}">بازگشت</a>
+{% endblock %}

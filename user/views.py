@@ -6,16 +6,48 @@ from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView, UpdateView
 
 from user import forms
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateProfileView(UpdateView):
+    model = User
+    fields = [
+        'username',
+        'first_name',
+        'last_name',
+        'email'
+    ]
+    template_name = 'user/edit_profile.html'
+
+    def get_object(self, queryset=None):
+        user = User.objects.get(
+            id=self.request.user.id
+        )
+        return user
+
+    def get_success_url(self):
+        return reverse('profile')
+
+
+@method_decorator(login_required, name='dispatch')
+class ProfileDetailView(DetailView):
+    model = User
+    template_name = 'user/profile.html'
+    context_object_name = 'user'
+
+    def get_object(self, queryset=None):
+        user = User.objects.get(id=self.request.user.id)
+        return user
 
 
 @method_decorator(login_required, name='dispatch')
 class ChangePassView(FormView):
     form_class = forms.ChangePassModelForms
     template_name = 'user/change_password.html'
-
+    
     def get_success_url(self):
         logout(self.request)
         return reverse('login')
@@ -28,6 +60,7 @@ class ChangePassView(FormView):
         if user.check_password(password):
             user.set_password(new_password)
             user.save()
+            logout(self.request)
         else:
             form.add_error('password', 'رمز فعلی صحیح نمی باشد')
             return super().form_invalid(form)

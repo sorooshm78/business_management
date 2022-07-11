@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    ویرایش حساب کاربری
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-success btn-block">ثبت</button>
+        <a class="btn btn-danger btn-block" href="{% url 'profile' %}">بازگشت</a>
+    </form>
+{% endblock %}
