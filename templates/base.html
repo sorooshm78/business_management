@@ -15,6 +15,7 @@
     <script src="{% static 'jalali_date/js/persian-datepicker.min.js' %}"></script>
     <script src="{% static 'modal/modal.js' %}"></script>
     {% block header_ref %}{% endblock %}
+
 </head>
 
 
@@ -22,11 +23,28 @@
 
 <div class="container text-right mt-2 mb-5">
 
-    <a class="btn btn-danger" href="{% url 'logout' %}">خروج</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-right">
+        <a class="navbar-brand btn btn-danger" href="{% url 'logout' %}">خروج</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
 
+                {% url 'profile' as profile_url %}
+                <li class="nav-item {% if request.path == profile_url %}active{% endif %}">
+                    <a class="nav-link" href="{{ profile_url }}">حساب کابری</a>
+                </li>
 
-    <a class="btn btn-success " href="{% url 'list_repository' %}">صحفه اصلی</a>
-    <a class="btn btn-success " href="{% url 'profile' %}">حساب کاربری</a>
+                {% url 'list_repository' as main_url %}
+                <li class="nav-item {% if request.path == main_url %}active{% endif %}">
+                    <a class="nav-link" href="{{ main_url }}">صحفه اصلی</a>
+                </li>
+            
+            </ul>
+
+        </div>
 
 </div>
 
